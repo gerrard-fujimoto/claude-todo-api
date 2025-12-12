@@ -5,6 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## プロジェクト概要
 
 Todo API - TypeScript + Express による RESTful API
+作業ディレクトリは常に以下のディレクトリを起点としてください。
+- /Users/gerrard/claude-todo-api/
 
 ## 利用可能なSkills
 
