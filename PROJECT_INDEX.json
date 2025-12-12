@@ -1,0 +1,310 @@
+{
+  "metadata": {
+    "projectName": "Todo API",
+    "generatedAt": "2025-12-12",
+    "description": "TypeScript + Express による RESTful API",
+    "version": "1.0.0",
+    "language": "TypeScript",
+    "runtime": "Node.js",
+    "framework": "Express.js"
+  },
+  "entryPoints": {
+    "server": {
+      "path": "src/index.ts",
+      "description": "サーバー起動エントリーポイント",
+      "port": 3000
+    },
+    "app": {
+      "path": "src/app.ts",
+      "description": "Expressアプリケーションとルート定義"
+    },
+    "tests": [
+      "src/app.test.ts",
+      "src/utils.test.ts"
+    ]
+  },
+  "coreModules": [
+    {
+      "name": "app",
+      "path": "src/app.ts",
+      "exports": ["app", "todos", "resetTodos"],
+      "purpose": "Expressアプリケーション、全APIルート、インメモリストレージ",
+      "dependencies": ["express", "./types", "./utils"]
+    },
+    {
+      "name": "types",
+      "path": "src/types.ts",
+      "exports": ["Priority", "Todo", "CreateTodoRequest", "ErrorResponse", "TodoQueryParams", "TodoParams"],
+      "purpose": "プロジェクト全体の型定義",
+      "dependencies": []
+    },
+    {
+      "name": "utils",
+      "path": "src/utils.ts",
+      "exports": [
+        "PRIORITY_ORDER",
+        "DEFAULT_PRIORITY",
+        "VALID_PRIORITIES",
+        "isValidPriority",
+        "createErrorResponse",
+        "sortByPriority",
+        "findTodoById",
+        "findTodoIndexById"
+      ],
+      "purpose": "ビジネスロジック、バリデーション、検索・ソート処理",
+      "dependencies": ["./types"]
+    },
+    {
+      "name": "index",
+      "path": "src/index.ts",
+      "exports": [],
+      "purpose": "サーバー起動",
+      "dependencies": ["./app"]
+    }
+  ],
+  "apiEndpoints": [
+    {
+      "method": "GET",
+      "path": "/todos",
+      "description": "Todo一覧取得 (優先度順ソート)",
+      "queryParams": ["completed"],
+      "responseType": "Todo[]"
+    },
+    {
+      "method": "POST",
+      "path": "/todos",
+      "description": "Todo作成",
+      "requestBody": {
+        "title": "string (required)",
+        "priority": "Priority (optional, default: medium)"
+      },
+      "responseType": "Todo"
+    },
+    {
+      "method": "PUT",
+      "path": "/todos/:id/complete",
+      "description": "Todo完了状態に変更",
+      "pathParams": ["id"],
+      "responseType": "Todo"
+    },
+    {
+      "method": "DELETE",
+      "path": "/todos/:id",
+      "description": "Todo削除",
+      "pathParams": ["id"],
+      "responseType": "Todo"
+    }
+  ],
+  "types": [
+    {
+      "name": "Priority",
+      "kind": "union",
+      "values": ["high", "medium", "low"]
+    },
+    {
+      "name": "Todo",
+      "kind": "interface",
+      "properties": {
+        "id": "string",
+        "title": "string",
+        "completed": "boolean",
+        "priority": "Priority",
+        "createdAt": "Date"
+      }
+    },
+    {
+      "name": "CreateTodoRequest",
+      "kind": "interface",
+      "properties": {
+        "title": "string",
+        "priority": "Priority (optional)"
+      }
+    },
+    {
+      "name": "ErrorResponse",
+      "kind": "interface",
+      "properties": {
+        "error": "string"
+      }
+    }
+  ],
+  "configuration": [
+    {
+      "file": "package.json",
+      "purpose": "npm設定、依存関係、scripts定義"
+    },
+    {
+      "file": "tsconfig.json",
+      "purpose": "TypeScriptコンパイラ設定 (ES2020, strict mode, dist/出力)"
+    },
+    {
+      "file": "jest.config.js",
+      "purpose": "Jest設定 (ts-jest, node環境, カバレッジ)"
+    },
+    {
+      "file": "CLAUDE.md",
+      "purpose": "プロジェクト規約、アーキテクチャ、API仕様"
+    },
+    {
+      "file": "CLAUDE.local.md",
+      "purpose": "個人用ローカル環境設定"
+    }
+  ],
+  "documentation": [
+    {
+      "file": "README.md",
+      "topic": "プロジェクト概要、セットアップ、API仕様、使用例"
+    },
+    {
+      "file": "CLAUDE.md",
+      "topic": "開発規約、アーキテクチャ、責務分離"
+    },
+    {
+      "file": ".claude/skills/typescript-dev/skill.md",
+      "topic": "TypeScript開発規約、Jest テスト規約"
+    },
+    {
+      "file": ".claude/skills/doc-coauthoring/skill.md",
+      "topic": "技術ドキュメント共同執筆ワークフロー"
+    },
+    {
+      "file": ".claude/skills/api-design/skill.md",
+      "topic": "REST API設計、エラーハンドリング"
+    },
+    {
+      "file": ".claude/skills/todo-code-review/skill.md",
+      "topic": "コードレビューガイドライン"
+    },
+    {
+      "file": ".claude/skills/webapp-testing/skill.md",
+      "topic": "Webアプリケーションテスト (Playwright)"
+    }
+  ],
+  "testCoverage": {
+    "unitTests": {
+      "count": 1,
+      "files": ["src/utils.test.ts"],
+      "lines": 160
+    },
+    "integrationTests": {
+      "count": 1,
+      "files": ["src/app.test.ts"],
+      "lines": 214
+    },
+    "totalLines": 374,
+    "coverageAreas": [
+      "全APIエンドポイント (GET, POST, PUT, DELETE)",
+      "エラーハンドリング (404, 400, JSONパースエラー)",
+      "クエリパラメータフィルタリング",
+      "優先度バリデーション",
+      "ソート処理",
+      "検索処理"
+    ]
+  },
+  "dependencies": {
+    "production": {
+      "express": "^4.18.2"
+    },
+    "development": {
+      "typescript": "^5.3.3",
+      "ts-node": "^10.9.2",
+      "jest": "^29.7.0",
+      "ts-jest": "^29.1.1",
+      "supertest": "^6.3.3",
+      "@types/express": "^4.17.21",
+      "@types/jest": "^29.5.11",
+      "@types/node": "^20.10.6",
+      "@types/supertest": "^6.0.2"
+    }
+  },
+  "scripts": {
+    "dev": "ts-node src/index.ts - 開発サーバー起動",
+    "build": "tsc - TypeScriptコンパイル",
+    "start": "node dist/index.js - 本番サーバー起動",
+    "test": "jest - 全テスト実行",
+    "test:watch": "jest --watch - ウォッチモード",
+    "test:coverage": "jest --coverage - カバレッジ付き"
+  },
+  "claudeIntegration": {
+    "skills": [
+      {
+        "name": "typescript-dev",
+        "path": ".claude/skills/typescript-dev/skill.md",
+        "description": "TypeScript開発規約、Jest テスト規約、コーディングスタイル"
+      },
+      {
+        "name": "doc-coauthoring",
+        "path": ".claude/skills/doc-coauthoring/skill.md",
+        "description": "技術ドキュメント共同執筆ワークフロー"
+      },
+      {
+        "name": "api-design",
+        "path": ".claude/skills/api-design/skill.md",
+        "description": "REST API設計、エラーハンドリング、バリデーション"
+      },
+      {
+        "name": "todo-code-review",
+        "path": ".claude/skills/todo-code-review/skill.md",
+        "description": "コードレビューガイドライン"
+      },
+      {
+        "name": "webapp-testing",
+        "path": ".claude/skills/webapp-testing/skill.md",
+        "description": "Webアプリケーションテスト (Playwright)"
+      }
+    ],
+    "commands": [
+      {
+        "name": "api-docs",
+        "path": ".claude/commands/api-docs.md"
+      },
+      {
+        "name": "commit-msg",
+        "path": ".claude/commands/commit-msg.md"
+      },
+      {
+        "name": "lint",
+        "path": ".claude/commands/lint.md"
+      },
+      {
+        "name": "test-report",
+        "path": ".claude/commands/test-report.md"
+      }
+    ]
+  },
+  "architecture": {
+    "pattern": "責務分離 (Separation of Concerns)",
+    "dataStorage": "インメモリ配列 (todos)",
+    "errorHandling": [
+      "グローバルエラーハンドラー",
+      "JSONパースエラーハンドラー",
+      "404エラーハンドリング",
+      "バリデーションエラー (400)"
+    ],
+    "testStrategy": [
+      "統合テスト: Supertest でAPIエンドポイントをテスト",
+      "ユニットテスト: ビジネスロジックを独立してテスト",
+      "サーバーを起動せずにテスト可能"
+    ]
+  },
+  "quickStart": [
+    "npm install - 依存関係のインストール",
+    "npm run dev - 開発サーバー起動 (ts-node)",
+    "npm test - テスト実行",
+    "npm run test:coverage - カバレッジ付きテスト",
+    "npm run build - ビルド (TypeScript → JavaScript)",
+    "npm start - 本番環境で起動"
+  ],
+  "statistics": {
+    "sourceFiles": 6,
+    "testFiles": 2,
+    "testLines": 374,
+    "configFiles": 3,
+    "skills": 5,
+    "commands": 4,
+    "apiEndpoints": 4,
+    "indexSize": "~10KB",
+    "fullCodebaseSize": "~58KB",
+    "reductionRate": "83%"
+  }
+}
