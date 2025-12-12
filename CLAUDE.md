@@ -2,36 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## コーディング規約
+## プロジェクト概要
 
-### TypeScript
-- **strict mode**: `tsconfig.json`で`"strict": true`を設定し、厳格な型チェックを有効化する
-- 型安全性を最優先し、`any`型の使用は避ける
+Todo API - TypeScript + Express による RESTful API
 
-### エラーハンドリング
-- すべてのエラーレスポンスは `{ error: string }` 形式にする
-- `createErrorResponse()`ヘルパー関数([src/utils.ts](src/utils.ts))を使用して一貫性を保つ
-- 適切なHTTPステータスコード(400, 404, 500など)を返す
+## 利用可能なSkills
 
-### バリデーション
-- すべてのエンドポイントで入力バリデーションを実装する
-- リクエストボディ、パラメータ、クエリパラメータのバリデーションを徹底する
-- バリデーションエラーは400 Bad Requestで返す
+プロジェクト固有の開発規約とワークフローは以下のSkillsで管理されています:
 
-### テスト
-- **テストフレームワーク**: Jestを使用
-- **カバレッジ目標**: 80%以上を目指す
-- 統合テスト: supertestを使用してAPIエンドポイントをテスト
-- ユニットテスト: ユーティリティ関数とビジネスロジックを個別にテスト
-- テスト実行: `npm run test:coverage`でカバレッジを確認
-
-## 依存関係とインストールのルール (厳守)
-- **セットアップ時**: `package-lock.json` が存在する場合は、絶対に `npm install` を使わず、**必ず `npm ci` を使用する**。
-  - 理由: ロックファイルのバージョンを厳守し、サプライチェーン攻撃や意図しないバージョンアップを防ぐため。
-- **パッケージ追加時**:
-  - 新規パッケージを追加する際は、可能な限り `--ignore-scripts` フラグを付ける (`npm install [package] --ignore-scripts`)。
-  - インストールしようとしているパッケージ名にタイプミスがないか(Typosquatting対策)、実行前に必ず確認する。
-- **監査**: パッケージ操作後は必ず `npm audit` を実行し、脆弱性をチェックする。
+- **[typescript-development](.claude/skills/typescript-dev/skill.md)**: TypeScript開発規約、Jest テスト規約、コーディングスタイル
+- **[doc-coauthoring](.claude/skills/doc-coauthoring/skill.md)**: 技術ドキュメント共同執筆ワークフロー（API仕様書、README、設計書等）
+- **[api-design](.claude/skills/api-design/skill.md)**: REST API設計、エラーハンドリング、バリデーション *(準備中)*
 
 ## 開発コマンド
 
